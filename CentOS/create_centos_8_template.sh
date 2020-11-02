@@ -59,13 +59,6 @@ function addFileAsset {
     cat $SOURCES/$1 | $MC asset create -filename "$1-$TEMPLATE_LABEL" -mime "text/plain" -variable-names-required "$3" -pipe
     $MC asset associate -id "$1-$TEMPLATE_LABEL" -template-id $TEMPLATE_LABEL -path "$2"
 }
-#firt param is file name on disk
-#second param is path in tftp/http
-function addFileAssetWithNoParams {
-    $MC asset list -format json  |jq '.[] | select(.FILENAME=="'$1-$TEMPLATE_LABEL'")|.ID' | xargs metalcloud-cli asset delete --autoconfirm -id
-    cat $SOURCES/$1 | $MC asset create -filename "$1-$TEMPLATE_LABEL" -mime "text/plain"  -pipe
-    $MC asset associate -id "$1-$TEMPLATE_LABEL" -template-id $TEMPLATE_LABEL -path "$2"
-}
 
 #add bootx64 (pre-bootloader uefi for secure boot)
 addBinaryURLAsset "bootx64.efi" "BaseOS/x86_64/kickstart/EFI/BOOT/BOOTX64.EFI" "bootloader"
@@ -89,5 +82,5 @@ addBinaryURLAsset 'initrd.img' 'BaseOS/x86_64/kickstart/images/pxeboot/initrd.im
 addFileAsset 'ks.cfg' '/ks.cfg' "repo_url_root,wan_interface_mac_adddress_0,instance_subdomain_permanent,initial_password,ntp_server_ip_0,HTTP_SERVER_ENDPOINT" 
 
 #add snmpd.conf
-addFileAssetWithNoParams 'snmpd.conf' '/snmpd.conf' "snmp_port,snmp_security_name,snmp_authentication_protocol,snmp_authentication_passphrase,snmp_privacy_protocol,snmp_privacy_passphrase,snmp_community_password,snmp_security_name,datacenter_name"
+addFileAsset 'snmpd.conf' '/snmpd.conf' "snmp_port,snmp_security_name,snmp_authentication_protocol,snmp_authentication_passphrase,snmp_privacy_protocol,snmp_privacy_passphrase,snmp_community_password,snmp_security_name,datacenter_name"
 
