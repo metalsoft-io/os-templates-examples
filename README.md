@@ -2,4 +2,4 @@
 
 Examples of automated install templates for MetalSoft.
 
-[CentOS 8](/CentOS8)
+[CentOS 8](CentOS8)
