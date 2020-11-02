@@ -12,6 +12,7 @@ The first param is the label of the template and the second must match the name 
 
 The script can be executed multiple times, only the os template creation would throw an error but that is expected.
 
+The variable glossary is available [in the documentation](https://docs.metalsoft.io/en/latest/guides/os_template_variable_glossary.html).
 
 The provisioning steps are as follows:
 1. a NIC connected to the quarantine network performs a PXE boot (issues a DHCP request and receives a reply with tftp:///BOOTX64.EFI as a first stage bootloader). This bootloader is required for secure boot.
