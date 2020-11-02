@@ -7,11 +7,11 @@ bash ./create_centos_8_template.sh centos-8-2-2004 8.2.2004
 
 The first param is the label of the template and the second must match the name of the directory under CentOS/ directory.
 
-The script can be executed multiple times, only the os template creation would throw an error but that is expected.
+The script can be executed multiple times, the template will be deleted if it exists.
 
 The variable glossary is available [in the documentation](https://docs.metalsoft.io/en/latest/guides/os_template_variable_glossary.html).
 
-The provisioning steps are as follows:
+The provisioning steps followed by the system are as follows:
 1. a NIC connected to the quarantine network performs a PXE boot (issues a DHCP request and receives a reply with tftp:///BOOTX64.EFI as a first stage bootloader). This bootloader is required for secure boot.
 2. BOOTX64.EFI then downloads grubx64.efi over TFTP and boots it
 3. GRUB then downloads the grub configuration file tftp:///grub.conf (template is called grubx64.cfg)
