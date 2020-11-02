@@ -11,8 +11,9 @@ The script can be executed multiple times, the template will be deleted if it ex
 
 If you want to alter the installation we recommend starting by copying the `8.2.2008` directory and editing the `ks.conf`.
 
-
 The variable glossary is available [in the documentation](https://docs.metalsoft.io/en/latest/guides/os_template_variable_glossary.html).
+
+## How this works:
 
 The provisioning steps followed by the system are as follows:
 1. a NIC connected to the quarantine network performs a PXE boot (issues a DHCP request and receives a reply with tftp:///BOOTX64.EFI as a first stage bootloader). This bootloader is required for secure boot.
