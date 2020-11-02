@@ -1,5 +1,3 @@
-# Creating a MetalSoft unattended install operating system template
-
 # CentOS
 To create an unattended install based local template use the script provided:
 
