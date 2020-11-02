@@ -2,7 +2,6 @@
 To create an unattended install based local template use the script provided:
 
 ```
-cd ./Scripts/bash
 bash ./create_centos_8_template.sh centos-8-2-2004 8.2.2004
 ```
 
