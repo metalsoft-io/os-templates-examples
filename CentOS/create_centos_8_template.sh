@@ -21,7 +21,7 @@ SOURCES="./$TEMPLATE_VERSION"
 
 MC="metalcloud-cli"
 
-DATACENTER_NAME="master"
+DATACENTER_NAME="uk-reading2"
 REPO_URL=`metalcloud-cli datacenter get --id $DATACENTER_NAME -show-config -format json | jq ".[0].CONFIG | fromjson |.repoURLRoot" -r`
 TEMPLATE_BASE=$REPO_URL/$TEMPLATE_ROOT
 
