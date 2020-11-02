@@ -79,7 +79,7 @@ addBinaryURLAsset 'vmlinuz' 'BaseOS/x86_64/kickstart/images/pxeboot/vmlinuz'
 addBinaryURLAsset 'initrd.img' 'BaseOS/x86_64/kickstart/images/pxeboot/initrd.img'
 
 #add kickstart file ks.cfg
-addFileAsset 'ks.cfg' '/ks.cfg' "repo_url_root,wan_interface_mac_adddress_0,instance_subdomain_permanent,initial_password,ntp_server_ip_0,HTTP_SERVER_ENDPOINT" 
+addFileAsset 'ks.cfg' '/ks.cfg' "repo_url_root,wan_interface_mac_adddress_0,instance_subdomain_permanent,initial_password,ntp_server_ip_0,HTTP_SERVER_ENDPOINT,management_ssh_key" 
 
 #add snmpd.conf
 addFileAsset 'snmpd.conf' '/snmpd.conf' "snmp_port,snmp_security_name,snmp_authentication_protocol,snmp_authentication_passphrase,snmp_privacy_protocol,snmp_privacy_passphrase,snmp_community_password,snmp_security_name,datacenter_name"
