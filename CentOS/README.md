@@ -1,4 +1,4 @@
-# CentOS
+# Building a MetalSoft CentOS unattended install template
 To create an unattended install based local template use the script provided:
 
 ```
@@ -9,9 +9,7 @@ The first param is the label of the template and the second must match the name 
 
 The script can be executed multiple times, the template will be deleted if it exists.
 
-If you want to alter the installation we recommend starting by copying the `8.2.2008` directory and editing the `ks.conf`.
-
-The variable glossary is available [in the documentation](https://docs.metalsoft.io/en/latest/guides/os_template_variable_glossary.html).
+If you want to alter the installation we recommend starting by copying the `8.2.2008` directory and editing the `ks.conf`.  The variable glossary is available [in the documentation](https://docs.metalsoft.io/en/latest/guides/os_template_variable_glossary.html).
 
 ## How this works:
 
