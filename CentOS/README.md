@@ -31,4 +31,18 @@ The provisioning steps followed by the system are as follows:
     4. The %post section enables iptables, configures snmp (by pulling the template as an asset) and configures the ssh keys.
 
 
+## Operating in air-gapped environments
+
+For environments where the internet is not available to the instances, we provide a proxy facility via the datacenter agent. To enable it add the agent's ip (BSIVRRPListenIPv4 configuration key) to the DNS servers list *DNSServers configuration key).
+Then configure the following in the postinst section of the /ks.conf asset.
+
+```bash
+dnf config-manager --add-repo {{repo_url_root}}/centos/8.2.2004/BaseOS/x86_64/os/
+
+dnf config-manager --set-disabled BaseOS
+dnf config-manager --set-disabled AppStream
+dnf config-manager --set-disabled extras
+```
+
+This will enable a single repository via the proxy service.
 
