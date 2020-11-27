@@ -1,0 +1,4 @@
+#!ipxe
+
+imgfetch {{HTTP_SERVER_ENDPOINT}}/boot.cfg
+chain {{HTTP_SERVER_ENDPOINT}}/bootx64.efi
