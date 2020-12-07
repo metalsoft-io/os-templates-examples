@@ -59,7 +59,7 @@ $MC os-template $OS_TEMPLATE_COMMAND \
 function addIPXEBinaryURLAsset {
     $MC asset create --url "$TEMPLATE_IPXE_BASE/$2" --filename "$1-$TEMPLATE_LABEL" \
     --template-id $TEMPLATE_LABEL --mime "application/octet-stream" --path "/$1" \
-    --delete-if-exists --usage "$3"
+    --delete-if-exists --usage "$3" --return-id
 }
 
 #first param is asset name, 
@@ -80,10 +80,10 @@ function addFileAsset {
 }
 
 #add ipxe.efi to boot the ESXi installer from an HTTP server
-addIPXEBinaryURLAsset "ipxe.efi" "ipxe.efi" "bootloader"
+TEMPLATE_INSTALL_BOOTLOADER_ASSET=`addIPXEBinaryURLAsset "ipxe.efi" "ipxe.efi" "bootloader"`
 
 #set the ipxe.efi bootloader as the template's default bootloader
-metalcloud-cli os-template update --id "$TEMPLATE_LABEL" --install-bootloader-asset "ipxe.efi-$TEMPLATE_LABEL"
+metalcloud-cli os-template update --id "$TEMPLATE_LABEL" --install-bootloader-asset "$TEMPLATE_INSTALL_BOOTLOADER_ASSET"
 
 #add bootx64 bootloader uefi
 addBinaryURLAsset "bootx64.efi" "efi/boot/bootx64.efi"
