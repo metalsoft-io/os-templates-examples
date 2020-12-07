@@ -3,4 +3,5 @@
 Examples of automated install templates for MetalSoft.
 
 [CentOS](CentOS)  
-[ESXi](ESXi)
+[ESXi](ESXi)  
+[Windows](Windows)  
