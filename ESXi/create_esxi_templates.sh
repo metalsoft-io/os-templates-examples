@@ -89,7 +89,7 @@ metalcloud-cli os-template update --id "$TEMPLATE_LABEL" --install-bootloader-as
 addBinaryURLAsset "bootx64.efi" "efi/boot/bootx64.efi"
 
 #add ipxe config file
-addFileAsset "esxi.ipxe" "/ipxe_config_install" "HTTP_SERVER_ENDPOINT"
+addFileAsset "esxi.ipxe" "/ipxe_config_install"
 
 #add esxi-http.cfg config file
 addFileAsset "esxi-http.cfg" "/boot.cfg"
