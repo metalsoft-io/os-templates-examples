@@ -2,14 +2,18 @@
 To create an unattended install based local template use the script provided:
 
 ```
-bash ./create_centos_8_template.sh centos-8-2-2004 8.2.2004
+bash ./create_centos_8_template.sh centos-8 8
+```
+or
+```
+bash ./create_centos_8_2_2004_template.sh centos-8-2-2004 8.2.2004
 ```
 
 The first param is the label of the template and the second must match the name of the directory under CentOS/ directory.
 
 The script can be executed multiple times, the template will be deleted if it exists.
 
-If you want to alter the installation we recommend starting by copying the `8.2.2004` directory and editing the `ks.conf`.  The variable glossary is available [in the documentation](https://docs.metalsoft.io/en/latest/guides/creating_a_local_install_template_from_scratch.html).
+If you want to alter the installation we recommend starting by copying the `8` or `8.2.2004` directory and editing the `ks.conf`.  The variable glossary is available [in the documentation](https://docs.metalsoft.io/en/latest/guides/creating_a_local_install_template_from_scratch.html).
 
 ## How this works:
 
