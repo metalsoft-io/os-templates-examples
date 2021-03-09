@@ -35,18 +35,50 @@ The provisioning steps followed by the system are as follows:
     4. The %post section enables iptables, configures snmp (by pulling the template as an asset) and configures the ssh keys.
 
 
-## Operating in air-gapped environments
-
-For environments where the internet is not available to the instances, we provide a proxy facility via the datacenter agent. To enable it add the agent's ip (BSIVRRPListenIPv4 configuration key) to the DNS servers list *DNSServers configuration key).
+## Operating in environments without direct internet access
+Where the internet is available only trough a proxy server (e.g. [Squid](https://en.wikipedia.org/wiki/Squid_(software))) to the instances.
 Then configure the following in the postinst section of the /ks.conf asset.
 
 ```bash
-dnf config-manager --add-repo {{repo_url_root}}/centos/8.2.2004/BaseOS/x86_64/os/
+%post
+# Main defines all global configuration options.
+echo 'proxy=http://{{datacenter_web_proxy_server_ip}}:{{datacenter_web_proxy_server_port}}' >> /etc/yum.conf
+echo 'proxy_username={{datacenter_web_proxy_username}}' >> /etc/yum.conf
+echo 'proxy_password={{datacenter_web_proxy_password}}' >> /etc/yum.conf
 
-dnf config-manager --set-disabled BaseOS
-dnf config-manager --set-disabled AppStream
-dnf config-manager --set-disabled extras
+%end
+```
+or by repoid
+```bash
+%post
+# Update proxy setting in repositories with repoid <repo1> and <repo2> and make the change permanent.
+dnf config-manager --save --setopt=*.proxy=http://{{datacenter_web_proxy_server_ip}}:{{datacenter_web_proxy_server_port}}/ <repo1> <repo2>
+
+%end
 ```
 
-This will enable a single repository via the proxy service.
+## Replace default yum repositories to private repositories.
+Configure the following in the postinst section of the /ks.conf asset.
+```bash
+%post
 
+for REPO in $(dnf repolist enabled | tail -n +2 | awk '{ print $1 }')
+do 
+    dnf config-manager --set-disabled $REPO
+done
+
+function addRepo() {
+        for REPO in `seq 1 $#`
+        do
+            REPOID=`echo "${!REPO////_}"`
+            dnf config-manager --add-repo http://"${!REPO}"
+            dnf config-manager --save --setopt $REPOID.gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-centosofficial
+            dnf config-manager --save --setopt $REPOID.gpgcheck=1
+        done
+}
+
+REPOHOST=`cat -d/ -f3 <<< {{repo_url_root}}`
+addRepo $REPOHOST/centos/8/extras/x86_64/os/ $REPOHOST/centos/8/AppStream/x86_64/os/ $REPOHOST/centos/8/BaseOS/x86_64/os/
+
+%end
+```
