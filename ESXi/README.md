@@ -1,7 +1,8 @@
 # Building a MetalSoft ESXi unattended install template
+
 To create an unattended install based local template use the script provided:
 
-```
+```bash
 bash ./create_esxi_templates.sh esxi-700-uefi-v2 7.0.0
 ```
 

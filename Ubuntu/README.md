@@ -1,11 +1,14 @@
 # Building a MetalSoft Ubuntu unattended install template
+
 To create an unattended install based local template use the script provided:
 
-```
+```bash
 bash ./create_ubuntu_template.sh ubuntu-18-04 18.04
 ```
+
 or
-```
+
+```bash
 bash ./create_ubuntu_template.sh ubuntu-20-04 20.04
 ```
 

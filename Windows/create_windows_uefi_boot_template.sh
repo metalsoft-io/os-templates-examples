@@ -21,12 +21,14 @@ SOURCES="./$TEMPLATE_VERSION"
 MC="metalcloud-cli"
 
 DATACENTER_NAME="$METALCLOUD_DATACENTER"
-REPO_URL=`metalcloud-cli datacenter get --id $DATACENTER_NAME --show-config -format json | jq ".[0].CONFIG | fromjson |.repoURLRoot" -r`
+REPO_URL=$(metalcloud-cli datacenter get --id "$DATACENTER_NAME" --show-config -format json | jq ".[0].CONFIG | fromjson |.repoURLRoot" -r)
 TEMPLATE_BASE=$REPO_URL/$TEMPLATE_ROOT
 TEMPLATE_WINPE_BASE="$REPO_URL/.tftp/boot/winpe"
 
-if $MC os-template get --id "$TEMPLATE_LABEL" 2>&1 >/dev/null; then
-    if $MC os-template delete --id "$TEMPLATE_LABEL" --autoconfirm 2>&1 >/dev/null; then
+# * It's ok to fail with _template <template_label> not found_ if an OS-template with this label doesn't yet exist
+if $MC os-template get --id "$TEMPLATE_LABEL" --format json; then
+    # * The delete operation, it's ok to fail, when the OS-template <template_label> it's used by an active instance
+    if $MC os-template delete --id "$TEMPLATE_LABEL" --autoconfirm; then
         OS_TEMPLATE_COMMAND=create
         OS_TEMPLATE_FLAG=label
     else
@@ -57,7 +59,7 @@ $MC os-template $OS_TEMPLATE_COMMAND \
 #third param is usage
 function addWinPEBinaryURLAsset {
     $MC asset create --url "$TEMPLATE_WINPE_BASE/$2" --filename "$1-$TEMPLATE_LABEL" \
-    --template-id $TEMPLATE_LABEL --mime "application/octet-stream" --path "$3" \
+    --template-id "$TEMPLATE_LABEL" --mime "application/octet-stream" --path "$3" \
     --delete-if-exists --usage "$4"
 }
 
@@ -66,7 +68,7 @@ function addWinPEBinaryURLAsset {
 #third param is usage
 function addBinaryURLAsset {
     $MC asset create --url "$TEMPLATE_BASE/$2" --filename "$1-$TEMPLATE_LABEL" \
-    --template-id $TEMPLATE_LABEL --mime "application/octet-stream" --path "/$1" \
+    --template-id "$TEMPLATE_LABEL" --mime "application/octet-stream" --path "/$1" \
     --delete-if-exists --usage "$3" --return-id
 }
 
@@ -74,12 +76,12 @@ function addBinaryURLAsset {
 #second param is path in tftp/http
 #third param is params accepted
 function addFileAsset {
-    cat $SOURCES/$1 | $MC asset create --filename "$1-$TEMPLATE_LABEL" --template-id $TEMPLATE_LABEL \
-    --mime "text/plain" --path "$2" --delete-if-exists --pipe
+    $MC asset create --filename "$1-$TEMPLATE_LABEL" --template-id "$TEMPLATE_LABEL" \
+    --mime "text/plain" --path "$2" --delete-if-exists --pipe < "$SOURCES/$1"
 }
 
 #add bootx64 bootloader uefi
-TEMPLATE_INSTALL_BOOTLOADER_ASSET=`addBinaryURLAsset "bootx64.efi" "efi/boot/bootx64.efi" "bootloader"`
+TEMPLATE_INSTALL_BOOTLOADER_ASSET=$(addBinaryURLAsset "bootx64.efi" "efi/boot/bootx64.efi" "bootloader")
 
 #set the bootx64.efi bootloader as the template's default bootloader
 metalcloud-cli os-template update --id "$TEMPLATE_LABEL" --install-bootloader-asset "$TEMPLATE_INSTALL_BOOTLOADER_ASSET"

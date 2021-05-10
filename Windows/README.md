@@ -1,10 +1,12 @@
 # Building a MetalSoft Windows unattended install template
+
 To create an unattended install based local template use the script provided:
 
-```
+```bash
 bash ./create_windows_bios_boot_template.sh w2019std-bios-boot 2019
 ```
-```
+
+```bash
 bash ./create_windows_uefi_boot_template.sh w2019std-uefi-boot 2019
 ```
 
