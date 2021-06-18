@@ -1,0 +1,13 @@
+#!ipxe
+
+echo
+echo Starting installation ...
+kernel {{HTTP_SERVER_ENDPOINT}}/linux
+initrd {{HTTP_SERVER_ENDPOINT}}/initrd.gz
+# BOOT_DEBUG=3 DEBCONF_DEBUG=5
+imgargs linux initrd=initrd.gz memcheck net.ifnames=0 biosdevname=0 netcfg/no_default_route=true netcfg/choose_interface={{wan_interface_0_mac_address}} ip=dhcp auto=true priority=critical url={{HTTP_SERVER_ENDPOINT}}/preseed.cfg
+boot || goto unknown_problem
+
+:unknown_problem
+echo Something went wrong
+exit 1
