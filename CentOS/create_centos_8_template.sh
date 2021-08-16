@@ -58,19 +58,16 @@ $MC os-template $OS_TEMPLATE_COMMAND \
 #second param is asset url relative to $TEMPLATE_BASE 
 #third param is usage
 function addBinaryURLAsset {
-        
-    $MC asset list --format json  | jq ".[] | select(.FILENAME==\"${1}-${TEMPLATE_LABEL}\")|.ID" -r | xargs -l metalcloud-cli asset delete --autoconfirm --id
-    $MC asset create --url "$TEMPLATE_BASE/$2" --filename "$1-$TEMPLATE_LABEL" --mime "application/octet-stream" --usage "$3" --return-id
-    $MC asset associate --id "$1-$TEMPLATE_LABEL" --template-id "$TEMPLATE_LABEL" -path "/$1"
+    $MC asset create --url "$TEMPLATE_BASE/$2" --filename "$1-$TEMPLATE_LABEL" \
+    --template-id "$TEMPLATE_LABEL" --mime "application/octet-stream" --path "/$1" \
+    --delete-if-exists --usage "$3" --return-id
 }
 
 #firt param is file name on disk
 #second param is path in tftp/http
-#third param is params accepted
 function addFileAsset {
-    $MC asset list --format json  |jq ".[] | select(.FILENAME==\"${1}-$TEMPLATE_LABEL\")|.ID" -r | xargs -l metalcloud-cli asset delete --autoconfirm --id
-    $MC asset create --filename "$1-$TEMPLATE_LABEL" --mime "text/plain" --pipe < "$SOURCES/$1"
-    $MC asset associate --id "$1-$TEMPLATE_LABEL" --template-id "$TEMPLATE_LABEL" --path "$2"
+    $MC asset create --filename "$1-$TEMPLATE_LABEL" --template-id "$TEMPLATE_LABEL" \
+    --mime "text/plain" --path "$2" --delete-if-exists --pipe < "$SOURCES/$1"
 }
 
 #add bootx64 (pre-bootloader uefi for secure boot)
