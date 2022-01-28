@@ -1,0 +1,12 @@
+#!ipxe
+
+set username {{iscsi_chap_username}}
+set password {{iscsi_chap_password}}
+set initiator-iqn {{iscsi_initiator_iqn}}
+set root-path iscsi:{{iscsi_drive_target_0}}::{{iscsi_drive_port_0}}:{{iscsi_drive_lun_id_0_hex}}:{{iscsi_drive_target_iqn_0}}
+set keep-san 1
+sanboot --drive=0x80 ${root-path} || echo Unable to boot from the given drive_id_bootable drive. && goto unknown_problem
+
+:unknown_problem
+echo Something went wrong
+exit 1
